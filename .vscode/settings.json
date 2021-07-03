@@ -1,0 +1,14 @@
+{
+  "editor.tabSize": 2,
+  // disable editor formatting, so eslint can handle it
+  "[javascript]": {
+    "editor.formatOnSave": false
+  },
+  // available through eslint plugin in vscode
+  "eslint.alwaysShowStatus": true,
+  // "prettier-eslint.eslintIntegration": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": true
+}

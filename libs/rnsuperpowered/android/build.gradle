@@ -1,0 +1,45 @@
+apply plugin: 'com.android.library'
+
+def superpoweredSdkPath = new File(projectDir, '../Superpowered')
+
+def safeExtGet(prop, fallback) {
+	rootProject.ext.has(prop) ? rootProject.ext.get(prop) : fallback
+}
+
+android {
+    compileSdkVersion safeExtGet('compileSdkVersion', 27)
+    buildToolsVersion safeExtGet('buildToolsVersion', '27.0.3')
+
+    defaultConfig {
+        minSdkVersion safeExtGet('minSdkVersion', 16)
+        targetSdkVersion safeExtGet('targetSdkVersion', 26)
+        versionCode 1
+        versionName "1.0"
+
+        ndk {
+			abiFilters 'armeabi-v7a', 'arm64-v8a'
+        }
+
+        compileOptions {
+            incremental false
+        }
+
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_PLATFORM=android-16', '-DANDROID_TOOLCHAIN=clang', '-DANDROID_ARM_NEON=TRUE', '-DANDROID_STL=c++_static', "-DPATH_TO_SUPERPOWERED:STRING=${superpoweredSdkPath}"
+                    cFlags '-O3', '-fsigned-char'
+                    cppFlags '-fsigned-char', "-I${superpoweredSdkPath}"
+            }
+        }
+    }
+
+    externalNativeBuild {
+        cmake {
+            path "CMakeLists.txt"
+        }
+    }
+}
+
+dependencies {
+    compile 'com.facebook.react:react-native:+'
+}
